@@ -12,6 +12,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.set("trust proxy", 1);
+
 app.use(session({
   secret: process.env.SESSION_SECRET || "localsite-secret-key-change-in-production",
   resave: false,
@@ -19,6 +21,7 @@ app.use(session({
   cookie: {
     secure: false,
     httpOnly: true,
+    sameSite: "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   },
 }));
