@@ -50,6 +50,7 @@ router.get("/users", requireAdmin, async (_req: Request, res: Response) => {
       planPrice: u.planPrice ?? null,
       subscriptionStatus: u.subscriptionStatus ?? null,
       nextPaymentDate: u.nextPaymentDate ?? null,
+      requestType: u.requestType ?? null,
       createdAt: u.createdAt.toISOString(),
     })));
   } catch (err) {
@@ -96,6 +97,7 @@ router.patch("/users/:id", requireAdmin, async (req: Request, res: Response) => 
       planPrice: updated.planPrice ?? null,
       subscriptionStatus: updated.subscriptionStatus ?? null,
       nextPaymentDate: updated.nextPaymentDate ?? null,
+      requestType: updated.requestType ?? null,
       createdAt: updated.createdAt.toISOString(),
     });
   } catch (err) {

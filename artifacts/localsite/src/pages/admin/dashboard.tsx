@@ -16,7 +16,7 @@ import { useAdminGetUsers, useAdminUpdateUser } from "@workspace/api-client-reac
 import { getAdminGetUsersQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Edit, UserCircle } from "lucide-react";
+import { Loader2, Edit, UserCircle, Wand2, Globe } from "lucide-react";
 import type { AdminUser } from "@workspace/api-client-react";
 
 const updateSchema = z.object({
@@ -27,6 +27,25 @@ const updateSchema = z.object({
 });
 
 type FormValues = z.infer<typeof updateSchema>;
+
+function RequestTypeBadge({ type }: { type: string | null | undefined }) {
+  if (!type) return <span className="text-slate-400 italic text-sm">—</span>;
+  if (type === "new_website_request") {
+    return (
+      <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full">
+        <Wand2 className="w-3 h-3" /> New Request
+      </span>
+    );
+  }
+  if (type === "existing_website_link") {
+    return (
+      <span className="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-700 text-xs font-semibold px-2.5 py-1 rounded-full">
+        <Globe className="w-3 h-3" /> Link Existing
+      </span>
+    );
+  }
+  return <span className="text-slate-500 text-sm">{type}</span>;
+}
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
@@ -52,10 +71,10 @@ export default function AdminDashboard() {
         setEditingUser(null);
       },
       onError: (error) => {
-        toast({ 
-          title: "Update failed", 
-          description: error.response?.data?.error || "Could not update user",
-          variant: "destructive" 
+        toast({
+          title: "Update failed",
+          description: (error as any)?.response?.data?.error || "Could not update user",
+          variant: "destructive"
         });
       }
     }
@@ -75,10 +94,10 @@ export default function AdminDashboard() {
     if (editingUser) {
       form.reset({
         websiteUrl: editingUser.websiteUrl || "",
-        planPrice: editingUser.planPrice || "₹199",
+        planPrice: editingUser.planPrice || "",
         subscriptionStatus: editingUser.subscriptionStatus || "PENDING",
-        nextPaymentDate: editingUser.nextPaymentDate 
-          ? format(parseISO(editingUser.nextPaymentDate), "yyyy-MM-dd") 
+        nextPaymentDate: editingUser.nextPaymentDate
+          ? format(parseISO(editingUser.nextPaymentDate), "yyyy-MM-dd")
           : "",
       });
     }
@@ -86,20 +105,14 @@ export default function AdminDashboard() {
 
   const onSubmit = (values: FormValues) => {
     if (!editingUser) return;
-    
-    // Convert empty strings to null for backend
-    const dataToSubmit = {
-      websiteUrl: values.websiteUrl || null,
-      planPrice: values.planPrice || null,
-      subscriptionStatus: values.subscriptionStatus || null,
-      // If date is provided, append time to make it a valid ISO timestamp if required, 
-      // or backend accepts date strings. The schema expects a string.
-      nextPaymentDate: values.nextPaymentDate ? new Date(values.nextPaymentDate).toISOString() : null,
-    };
-
-    updateMutation.mutate({ 
-      id: editingUser.id, 
-      data: dataToSubmit 
+    updateMutation.mutate({
+      id: editingUser.id,
+      data: {
+        websiteUrl: values.websiteUrl || null,
+        planPrice: values.planPrice || null,
+        subscriptionStatus: values.subscriptionStatus || null,
+        nextPaymentDate: values.nextPaymentDate ? new Date(values.nextPaymentDate).toISOString() : null,
+      }
     });
   };
 
@@ -124,9 +137,9 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <AdminNavbar />
-      
+
       <main className="flex-1 py-12">
-        <div className="container max-w-7xl mx-auto px-4">
+        <div className="container max-w-[1400px] mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-3xl font-display font-bold text-slate-900">Users Management</h1>
@@ -143,18 +156,21 @@ export default function AdminDashboard() {
               <Table>
                 <TableHeader className="bg-slate-50">
                   <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Website URL</TableHead>
-                    <TableHead>Plan</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Next Payment</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead className="min-w-[160px]">Name</TableHead>
+                    <TableHead className="min-w-[130px]">Mobile Number</TableHead>
+                    <TableHead className="min-w-[160px]">Business Name</TableHead>
+                    <TableHead className="min-w-[140px]">Request Type</TableHead>
+                    <TableHead className="min-w-[180px]">Website URL</TableHead>
+                    <TableHead className="min-w-[100px]">Plan</TableHead>
+                    <TableHead className="min-w-[130px]">Status</TableHead>
+                    <TableHead className="min-w-[120px]">Next Payment</TableHead>
+                    <TableHead className="text-right min-w-[80px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {!users?.length ? (
                     <TableRow>
-                      <TableCell colSpan={6} className="h-32 text-center text-muted-foreground">
+                      <TableCell colSpan={9} className="h-32 text-center text-muted-foreground">
                         No users found in the database.
                       </TableCell>
                     </TableRow>
@@ -162,32 +178,55 @@ export default function AdminDashboard() {
                     users.map((user) => (
                       <TableRow key={user.id} className="hover:bg-slate-50/50">
                         <TableCell>
-                          <div className="font-medium text-slate-900">{user.businessName}</div>
-                          <div className="text-sm text-slate-500">{user.name} • {user.email}</div>
+                          <div className="font-medium text-slate-900">{user.name}</div>
+                          <div className="text-xs text-slate-400">{user.email}</div>
+                        </TableCell>
+                        <TableCell>
+                          <span className="text-slate-700 text-sm">{user.phone}</span>
+                        </TableCell>
+                        <TableCell>
+                          <span className="font-medium text-slate-800 text-sm">{user.businessName}</span>
+                        </TableCell>
+                        <TableCell>
+                          <RequestTypeBadge type={user.requestType} />
                         </TableCell>
                         <TableCell>
                           {user.websiteUrl ? (
-                            <a href={user.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                            <a
+                              href={user.websiteUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:underline text-sm truncate block max-w-[160px]"
+                              title={user.websiteUrl}
+                            >
                               {user.websiteUrl.replace(/^https?:\/\//, '')}
                             </a>
                           ) : (
-                            <span className="text-slate-400 italic">Unassigned</span>
+                            <span className="text-slate-400 italic text-sm">Unassigned</span>
                           )}
                         </TableCell>
                         <TableCell>
-                          {user.planPrice ? <span className="font-medium">{user.planPrice}</span> : <span className="text-slate-400">-</span>}
+                          {user.planPrice
+                            ? <span className="font-semibold text-slate-800">{user.planPrice}</span>
+                            : <span className="text-slate-400 text-sm">—</span>
+                          }
                         </TableCell>
                         <TableCell>
-                          <Badge variant="secondary" className={`${getStatusColor(user.subscriptionStatus)} border-0 font-medium`}>
+                          <Badge variant="secondary" className={`${getStatusColor(user.subscriptionStatus)} border-0 font-medium text-xs`}>
                             {user.subscriptionStatus?.replace(/_/g, ' ') || 'PENDING'}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-slate-600">
-                          {user.nextPaymentDate ? format(parseISO(user.nextPaymentDate), "MMM d, yyyy") : "-"}
+                        <TableCell className="text-slate-600 text-sm">
+                          {user.nextPaymentDate ? format(parseISO(user.nextPaymentDate), "MMM d, yyyy") : "—"}
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button variant="ghost" size="sm" onClick={() => setEditingUser(user)} className="text-blue-600 hover:text-blue-700 hover:bg-blue-50">
-                            <Edit className="w-4 h-4 mr-2" /> Edit
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setEditingUser(user)}
+                            className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                          >
+                            <Edit className="w-4 h-4 mr-1.5" /> Edit
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -205,10 +244,10 @@ export default function AdminDashboard() {
           <DialogHeader>
             <DialogTitle>Edit User</DialogTitle>
             <DialogDescription>
-              Update subscription details for {editingUser?.businessName}
+              Update subscription details for <span className="font-semibold">{editingUser?.businessName}</span>
             </DialogDescription>
           </DialogHeader>
-          
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
               <FormField
@@ -224,7 +263,7 @@ export default function AdminDashboard() {
                   </FormItem>
                 )}
               />
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -232,7 +271,7 @@ export default function AdminDashboard() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Plan Price</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value || ""}>
+                      <Select onValueChange={field.onChange} value={field.value || ""}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select plan" />
@@ -248,14 +287,14 @@ export default function AdminDashboard() {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="subscriptionStatus"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Status</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value || ""}>
+                      <Select onValueChange={field.onChange} value={field.value || ""}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select status" />

@@ -8,6 +8,7 @@ import Home from "@/pages/home";
 import Login from "@/pages/auth/login";
 import Signup from "@/pages/auth/signup";
 import Dashboard from "@/pages/dashboard";
+import ChooseWebsiteAction from "@/pages/choose-website-action";
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/choose-website-action" component={ChooseWebsiteAction} />
       
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/admin/login" component={AdminLogin} />

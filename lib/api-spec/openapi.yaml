@@ -13,6 +13,8 @@ tags:
     description: Authentication operations
   - name: users
     description: User operations
+  - name: onboarding
+    description: Onboarding operations
   - name: admin
     description: Admin operations
 paths:
@@ -155,6 +157,56 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /onboarding/request-website:
+    post:
+      operationId: requestWebsite
+      tags: [onboarding]
+      summary: Request a new website to be built
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestWebsiteBody"
+      responses:
+        "200":
+          description: Request submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /onboarding/connect-website:
+    post:
+      operationId: connectWebsite
+      tags: [onboarding]
+      summary: Connect an existing website
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConnectWebsiteBody"
+      responses:
+        "200":
+          description: Connection request submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
         "401":
           description: Not authenticated
           content:
@@ -374,12 +426,34 @@ components:
         nextPaymentDate:
           type: string
           nullable: true
+        requestType:
+          type: string
+          nullable: true
       required:
         - id
         - name
         - businessName
         - email
         - phone
+
+    RequestWebsiteBody:
+      type: object
+      properties:
+        businessName:
+          type: string
+      required:
+        - businessName
+
+    ConnectWebsiteBody:
+      type: object
+      properties:
+        businessName:
+          type: string
+        websiteUrl:
+          type: string
+      required:
+        - businessName
+        - websiteUrl
 
     AdminUser:
       type: object
@@ -404,6 +478,9 @@ components:
           type: string
           nullable: true
         nextPaymentDate:
+          type: string
+          nullable: true
+        requestType:
           type: string
           nullable: true
         createdAt:

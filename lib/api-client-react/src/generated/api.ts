@@ -20,11 +20,13 @@ import type {
   AdminUpdateUserRequest,
   AdminUser,
   AuthResponse,
+  ConnectWebsiteBody,
   DashboardData,
   ErrorResponse,
   HealthStatus,
   LoginRequest,
   MessageResponse,
+  RequestWebsiteBody,
   SignupRequest,
   UserProfile,
 } from "./api.schemas";
@@ -584,6 +586,178 @@ export const useActivateSubscription = <
   TContext
 > => {
   return useMutation(getActivateSubscriptionMutationOptions(options));
+};
+
+/**
+ * @summary Request a new website to be built
+ */
+export const getRequestWebsiteUrl = () => {
+  return `/api/onboarding/request-website`;
+};
+
+export const requestWebsite = async (
+  requestWebsiteBody: RequestWebsiteBody,
+  options?: RequestInit,
+): Promise<MessageResponse> => {
+  return customFetch<MessageResponse>(getRequestWebsiteUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(requestWebsiteBody),
+  });
+};
+
+export const getRequestWebsiteMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof requestWebsite>>,
+    TError,
+    { data: BodyType<RequestWebsiteBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof requestWebsite>>,
+  TError,
+  { data: BodyType<RequestWebsiteBody> },
+  TContext
+> => {
+  const mutationKey = ["requestWebsite"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof requestWebsite>>,
+    { data: BodyType<RequestWebsiteBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return requestWebsite(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type RequestWebsiteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof requestWebsite>>
+>;
+export type RequestWebsiteMutationBody = BodyType<RequestWebsiteBody>;
+export type RequestWebsiteMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Request a new website to be built
+ */
+export const useRequestWebsite = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof requestWebsite>>,
+    TError,
+    { data: BodyType<RequestWebsiteBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof requestWebsite>>,
+  TError,
+  { data: BodyType<RequestWebsiteBody> },
+  TContext
+> => {
+  return useMutation(getRequestWebsiteMutationOptions(options));
+};
+
+/**
+ * @summary Connect an existing website
+ */
+export const getConnectWebsiteUrl = () => {
+  return `/api/onboarding/connect-website`;
+};
+
+export const connectWebsite = async (
+  connectWebsiteBody: ConnectWebsiteBody,
+  options?: RequestInit,
+): Promise<MessageResponse> => {
+  return customFetch<MessageResponse>(getConnectWebsiteUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(connectWebsiteBody),
+  });
+};
+
+export const getConnectWebsiteMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof connectWebsite>>,
+    TError,
+    { data: BodyType<ConnectWebsiteBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof connectWebsite>>,
+  TError,
+  { data: BodyType<ConnectWebsiteBody> },
+  TContext
+> => {
+  const mutationKey = ["connectWebsite"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof connectWebsite>>,
+    { data: BodyType<ConnectWebsiteBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return connectWebsite(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ConnectWebsiteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof connectWebsite>>
+>;
+export type ConnectWebsiteMutationBody = BodyType<ConnectWebsiteBody>;
+export type ConnectWebsiteMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Connect an existing website
+ */
+export const useConnectWebsite = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof connectWebsite>>,
+    TError,
+    { data: BodyType<ConnectWebsiteBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof connectWebsite>>,
+  TError,
+  { data: BodyType<ConnectWebsiteBody> },
+  TContext
+> => {
+  return useMutation(getConnectWebsiteMutationOptions(options));
 };
 
 /**

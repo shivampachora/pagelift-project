@@ -16,4 +16,5 @@ export interface DashboardData {
   planPrice?: string | null;
   subscriptionStatus?: string | null;
   nextPaymentDate?: string | null;
+  requestType?: string | null;
 }

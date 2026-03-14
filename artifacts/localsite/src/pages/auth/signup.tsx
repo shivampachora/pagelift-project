@@ -35,7 +35,7 @@ export default function Signup() {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
         toast({ title: "Account created successfully!" });
-        setLocation("/dashboard");
+        setLocation("/choose-website-action");
       },
       onError: (error) => {
         toast({ 

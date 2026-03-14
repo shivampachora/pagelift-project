@@ -90,6 +90,7 @@ export const GetDashboardResponse = zod.object({
   planPrice: zod.string().nullish(),
   subscriptionStatus: zod.string().nullish(),
   nextPaymentDate: zod.string().nullish(),
+  requestType: zod.string().nullish(),
 });
 
 /**
@@ -105,6 +106,30 @@ export const ActivateSubscriptionResponse = zod.object({
   planPrice: zod.string().nullish(),
   subscriptionStatus: zod.string().nullish(),
   nextPaymentDate: zod.string().nullish(),
+  requestType: zod.string().nullish(),
+});
+
+/**
+ * @summary Request a new website to be built
+ */
+export const RequestWebsiteBody = zod.object({
+  businessName: zod.string(),
+});
+
+export const RequestWebsiteResponse = zod.object({
+  message: zod.string(),
+});
+
+/**
+ * @summary Connect an existing website
+ */
+export const ConnectWebsiteBody = zod.object({
+  businessName: zod.string(),
+  websiteUrl: zod.string(),
+});
+
+export const ConnectWebsiteResponse = zod.object({
+  message: zod.string(),
 });
 
 /**
@@ -139,6 +164,7 @@ export const AdminGetUsersResponseItem = zod.object({
   planPrice: zod.string().nullish(),
   subscriptionStatus: zod.string().nullish(),
   nextPaymentDate: zod.string().nullish(),
+  requestType: zod.string().nullish(),
   createdAt: zod.string(),
 });
 export const AdminGetUsersResponse = zod.array(AdminGetUsersResponseItem);
@@ -167,5 +193,6 @@ export const AdminUpdateUserResponse = zod.object({
   planPrice: zod.string().nullish(),
   subscriptionStatus: zod.string().nullish(),
   nextPaymentDate: zod.string().nullish(),
+  requestType: zod.string().nullish(),
   createdAt: zod.string(),
 });

@@ -54,6 +54,16 @@ export interface DashboardData {
   planPrice?: string | null;
   subscriptionStatus?: string | null;
   nextPaymentDate?: string | null;
+  requestType?: string | null;
+}
+
+export interface RequestWebsiteBody {
+  businessName: string;
+}
+
+export interface ConnectWebsiteBody {
+  businessName: string;
+  websiteUrl: string;
 }
 
 export interface AdminUser {
@@ -66,6 +76,7 @@ export interface AdminUser {
   planPrice?: string | null;
   subscriptionStatus?: string | null;
   nextPaymentDate?: string | null;
+  requestType?: string | null;
   createdAt: string;
 }
 

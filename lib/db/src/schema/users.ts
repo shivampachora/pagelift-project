@@ -13,6 +13,7 @@ export const usersTable = pgTable("users", {
   planPrice: text("plan_price"),
   subscriptionStatus: text("subscription_status"),
   nextPaymentDate: text("next_payment_date"),
+  requestType: text("request_type"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

@@ -25,6 +25,7 @@ router.get("/", async (req: Request, res: Response) => {
       planPrice: user.planPrice ?? null,
       subscriptionStatus: user.subscriptionStatus ?? null,
       nextPaymentDate: user.nextPaymentDate ?? null,
+      requestType: user.requestType ?? null,
     });
   } catch (err) {
     console.error("Dashboard error:", err);

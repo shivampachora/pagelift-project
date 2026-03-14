@@ -16,5 +16,6 @@ export interface AdminUser {
   planPrice?: string | null;
   subscriptionStatus?: string | null;
   nextPaymentDate?: string | null;
+  requestType?: string | null;
   createdAt: string;
 }
