@@ -30,7 +30,7 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/choose-website-action" component={ChooseWebsiteAction} />
       
-      <Route path="/admin" component={AdminDashboard} />
+      <Route path="/admin" component={AdminLogin} />
       <Route path="/admin/login" component={AdminLogin} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
       
