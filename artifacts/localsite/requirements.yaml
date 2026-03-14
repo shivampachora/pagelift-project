@@ -1,0 +1,18 @@
+packages:
+  "framer-motion": "For page transitions and scroll-triggered animations to give a premium SaaS feel"
+  "react-hook-form": "For robust form state management"
+  "@hookform/resolvers": "For Zod schema validation integration with react-hook-form"
+  "zod": "For strict schema validation on forms"
+  "date-fns": "For formatting next payment dates"
+
+images:
+  - path: "artifacts/localsite/public/images/hero-bg.png"
+    description: "Abstract modern gradient mesh background in professional indigo, violet, and soft teal colors. Clean, premium SaaS aesthetic."
+    aspect_ratio: "16:9"
+  - path: "artifacts/localsite/public/images/dashboard-pattern.png"
+    description: "Subtle geometric dot pattern with very low opacity, perfect for a dashboard background."
+    aspect_ratio: "16:9"
+
+notes:
+  - "Assuming React Query hooks are exported perfectly from @workspace/api-client-react"
+  - "Authentication checks rely on /api/auth/me failing with 401"
