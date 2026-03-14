@@ -40,7 +40,7 @@ export default function Signup() {
       onError: (error) => {
         toast({ 
           title: "Signup failed", 
-          description: error.response?.data?.error || "Could not create account",
+          description: error.data?.error || "Could not create account",
           variant: "destructive" 
         });
       }
