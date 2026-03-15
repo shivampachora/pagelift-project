@@ -32,12 +32,12 @@ export default function AdminLogin() {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getAdminGetUsersQueryKey() });
         toast({ title: "Admin authenticated" });
-        setLocation("/admin");
+        setLocation("/admin/dashboard");
       },
       onError: (error) => {
         toast({ 
           title: "Access Denied", 
-          description: error.response?.data?.error || "Invalid admin credentials",
+          description: error.data?.error || "Invalid admin credentials",
           variant: "destructive" 
         });
       }
