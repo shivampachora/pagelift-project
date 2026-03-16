@@ -23,7 +23,7 @@ export function AdminNavbar() {
       <div className="container max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <ShieldAlert className="w-6 h-6 text-red-400" />
-          <span className="font-display font-bold text-xl tracking-tight">LocalSite <span className="font-normal text-slate-400">Admin</span></span>
+          <span className="font-display font-bold text-xl tracking-tight">PageLift <span className="font-normal text-slate-400">Admin</span></span>
         </div>
         
         <div className="flex items-center gap-4">

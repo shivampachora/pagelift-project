@@ -98,7 +98,7 @@ export default function Home() {
               >
                 <h3 className="text-2xl font-bold mb-4">Ready to start?</h3>
                 <p className="text-primary-foreground/80 mb-6 flex-1">
-                  Join hundreds of small businesses already online with LocalSite.
+                  Join hundreds of small businesses already online with PageLift.
                 </p>
                 <Button variant="secondary" className="w-full text-primary hover:bg-white" asChild>
                   <Link href="/signup">Get Started Now</Link>
@@ -110,7 +110,7 @@ export default function Home() {
       </main>
       
       <footer className="py-12 border-t border-border bg-white text-center">
-        <p className="text-muted-foreground">© {new Date().getFullYear()} LocalSite. All rights reserved.</p>
+        <p className="text-muted-foreground">© {new Date().getFullYear()} PageLift. All rights reserved.</p>
       </footer>
     </div>
   );

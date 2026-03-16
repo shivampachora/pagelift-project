@@ -27,7 +27,7 @@ export function Navbar() {
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white shadow-md">
             <Globe className="w-5 h-5" />
           </div>
-          <span className="font-display font-bold text-xl tracking-tight">LocalSite</span>
+          <span className="font-display font-bold text-xl tracking-tight">PageLift</span>
         </Link>
         
         <div className="flex items-center gap-4">

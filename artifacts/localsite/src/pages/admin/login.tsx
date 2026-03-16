@@ -68,7 +68,7 @@ export default function AdminLogin() {
                 <FormItem>
                   <FormLabel className="text-slate-300">Admin Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="admin@localsite.com" {...field} className="bg-slate-800 border-slate-700 text-white h-12" />
+                    <Input placeholder="admin@pagelift.com" {...field} className="bg-slate-800 border-slate-700 text-white h-12" />
                   </FormControl>
                   <FormMessage className="text-red-400" />
                 </FormItem>
