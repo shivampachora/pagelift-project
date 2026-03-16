@@ -59,6 +59,36 @@ router.get("/users", requireAdmin, async (_req: Request, res: Response) => {
   }
 });
 
+router.delete("/users", requireAdmin, async (_req: Request, res: Response) => {
+  try {
+    await db.delete(usersTable);
+    return res.json({ message: "All users deleted successfully" });
+  } catch (err) {
+    console.error("Admin delete all users error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/users/:id", requireAdmin, async (req: Request, res: Response) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "Invalid user ID" });
+  }
+
+  try {
+    const [existing] = await db.select().from(usersTable).where(eq(usersTable.id, id)).limit(1);
+    if (!existing) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    await db.delete(usersTable).where(eq(usersTable.id, id));
+    return res.json({ message: "User deleted successfully" });
+  } catch (err) {
+    console.error("Admin delete user error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 router.patch("/users/:id", requireAdmin, async (req: Request, res: Response) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
